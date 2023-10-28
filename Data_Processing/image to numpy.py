@@ -1,12 +1,12 @@
 import os
 import numpy as np
 import rasterio
-
+# The program is modified from the original program provided by the user @tejasri19, please see https://github.com/tejasri19/EuroSAT_data_analysis/blob/main/image_to_numpy.py for original code
 # set the path to the directory containing the EuroSAT dataset
-data_dir = 'C:/Users/jupyter/Desktop/EuroSAT_MS/EuroSAT_MS'
+data_dir = '.../IndexName'
 
 # set the path to the directory where the npy files will be saved
-output_dir = 'C:/Users/jupyter/Desktop/Multi'
+output_dir = '.../folderName'
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 # define a list of the class names in the dataset
@@ -25,7 +25,9 @@ for i in range(len(class_names)):
     image_filenames = os.listdir(class_dir)
 
     # initialize an empty array to hold the image data
-    X = np.zeros((len(image_filenames), 64, 64, 13))
+    # "64,64" represent for the size of image is 64x64
+    # 1 represents 1 channel will be applied to the numpy dataset. For the grneration to multiple channels, please change the number to number of channels needed.
+    X = np.zeros((len(image_filenames), 64, 64, 1))
 
     # loop over each image in the current class
     for j in range(len(image_filenames)):
@@ -39,12 +41,12 @@ for i in range(len(class_names)):
         with rasterio.open(image_path) as src:
             # read the image data as a numpy array
             image = src.read()
-
-        # Extract the specific channels (2nd, 3rd, 4th, and 8th and SWIR) you want
-        # selected_channels = [1, 2, 3, 7, 10, 11]  # Channels are 0-based, so 2nd channel is at index 1
+        
+        # Extract the specific channel you want
+        # Channels are 0-based, so 14th channel is at index 13, you can add more channels if you want to use multi-spectral method
 
         # Transpose the image data to the shape (len(selected_channels), 64, 64)
-        selected_channels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        selected_channels = [13]
 
         image = np.transpose(image[selected_channels], (1, 2, 0))
 
